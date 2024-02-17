@@ -73,7 +73,7 @@ class RobotBuilder {
     if (!this.shutdownFlag) {
       this.componentsQueue.push(component);
       if (!this.building && this.componentsQueue.length >= this.batchSize) {
-        this.startBuilding;
+        this.startBuilding();
       }
     } else {
       console.log('No more jobs. RobotBuilder is down');
@@ -86,9 +86,9 @@ class RobotBuilder {
     setTimeout(() => {
       const robot = new Robot(this.batch);
       const results = this.batch.map(
-        (component) => new JobResult(component.name + 'completed', null)
+        (component) => new JobResult(component.name + ' assembled', null)
       );
-      this.handleBatchCompletion(results);
+      this.handleBatchCompletion(robot, results);
       if (this.componentsQueue.length >= this.batchSize) {
         this.startBuilding();
       } else {

@@ -31,12 +31,12 @@ const onBatchComplete = (robot, results) => {
 const builder = new RobotBuilder(5, 4000, onBatchComplete);
 
 // Add components to the builder for multiple jobs
-// Comment this code if we want to submit a single job below
-for (let i = 0; i < 5; i++) {
-  components.forEach((component) => {
-    builder.addComponent(component);
-  });
-}
+// Do you want multiple batches, uncomment the loop
+// for (let i = 0; i < 5; i++) {
+components.forEach((component) => {
+  builder.addComponent(component);
+});
+// }
 
 // submitting a single job
 setTimeout(() => {
@@ -46,4 +46,4 @@ setTimeout(() => {
 // Shutdown the builder after a delay
 setTimeout(() => {
   builder.shutdown();
-}, 20000);
+}, 5000);

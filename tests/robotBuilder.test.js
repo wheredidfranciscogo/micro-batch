@@ -4,7 +4,7 @@ const {
   RobotComponent,
   Robot,
   RobotBuilder,
-} = require('../batching');
+} = require('../src/robotBuilder');
 
 // Test suite for the Job class
 describe('Job Class', () => {
