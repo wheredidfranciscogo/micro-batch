@@ -60,7 +60,11 @@ class RobotBuilder {
     this.batchSize;
     this.buildTime;
     this.handleBatchCompletion;
+    this.componentsQueue = [];
+  }
+  // this is the central part of our process
+  // add the components to an array to later control the batch size (robot components number)
+  addComponent(component) {
+    this.componentsQueue.push(component);
   }
 }
-
-
