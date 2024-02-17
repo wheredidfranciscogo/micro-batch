@@ -45,6 +45,20 @@ class JobResult {
 class Robot {
   constructor(components) {
     this.components = components;
+    this.specialNumber = this.generateSpecialNumber();
+  }
+  generateSpecialNumber() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let specialNumber = '';
+    for (let i = 0; i < 2; i++) {
+      specialNumber += letters.charAt(
+        Math.floor(Math.random() * letters.length)
+      );
+    }
+    for (let i = 0; i < 4; i++) {
+      specialNumber += Math.floor(Math.random() * 10);
+    }
+    return specialNumber;
   }
 }
 

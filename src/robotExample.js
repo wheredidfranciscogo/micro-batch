@@ -23,7 +23,7 @@ const components = [
 
 // let twitch this for a better output
 const onBatchComplete = (robot, results) => {
-  console.log('Robot assembled:', robot);
+  console.log('Robot assembled:', robot.specialNumber);
   console.log('Results:', results);
 };
 
