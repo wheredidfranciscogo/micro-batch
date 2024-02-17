@@ -61,10 +61,47 @@ class RobotBuilder {
     this.buildTime;
     this.handleBatchCompletion;
     this.componentsQueue = [];
+    this.batch = [];
+    this.shutdownFlag = false;
+    this.building = false;
   }
   // this is the central part of our process
   // add the components to an array to later control the batch size (robot components number)
   addComponent(component) {
-    this.componentsQueue.push(component);
+    // this seems to be the best place to flag the status of the service
+    // there are no more component to be added to the queue therefore we can kill the service, RobotBuilder is down.
+    if (!this.shutdownFlag) {
+      this.componentsQueue.push(component);
+      if (!this.building && this.componentsQueue.length >= this.batchSize) {
+        this.startBuilding;
+      }
+    } else {
+      console.log('No more jobs. RobotBuilder is down');
+    }
   }
+
+      // lets make sure the components in the query match to the batchSize we define
+      this.batch = this.componentsQueue.splice(0, this.batchSize);
+      setTimeout(() => {
+        const robot = new Robot(this.batch);
+        const results = this.batch.map(
+          (component) => new JobResult(component.name + 'completed', null)
+        );
+        this.handleBatchCompletion(results);
+        if (this.componentsQueue.length >= this.batchSize) {
+          this.startBuilding();
+        } else {
+          this.building = false;
+        }
+      }, this.buildTime);
+    }
+    // there are no more components in the Queue, therefore we set building to false
+    // and proceed to shutdown RobotBuilder
+    shutdown() {
+      this.shutdownFlag = true;
+    }
+  }
+  
+  module.exports = { Job, JobResult, RobotComponent, Robot, RobotBuilder };
+  
 }
