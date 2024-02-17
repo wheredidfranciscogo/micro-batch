@@ -1,0 +1,11 @@
+{
+  "name": "micro-batch-robots",
+  "version": "1.0.0",
+  "description": "micro-batching to assable robot on batches",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

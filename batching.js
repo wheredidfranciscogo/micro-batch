@@ -31,35 +31,35 @@ Class RobotBuilder
 
 class Job {
   constructor(data) {
-    this.data;
+    this.data = data;
   }
 }
 
 class JobResult {
   constructor(data, error) {
-    this.data;
-    this.error;
+    this.data = data;
+    this.error = error;
   }
 }
 
 class Robot {
   constructor(components) {
-    this.components;
+    this.components = components;
   }
 }
 
 class RobotComponent {
   constructor(name) {
-    this.name;
+    this.name = name;
   }
 }
 
 class RobotBuilder {
   // This class has to handle the batchSize, the building time and control when the batch (Robot) is complete
   constructor(batchSize, buildTime, handleBatchCompletion) {
-    this.batchSize;
-    this.buildTime;
-    this.handleBatchCompletion;
+    this.batchSize = batchSize;
+    this.buildTime = buildTime;
+    this.handleBatchCompletion = handleBatchCompletion;
     this.componentsQueue = [];
     this.batch = [];
     this.shutdownFlag = false;
@@ -79,29 +79,28 @@ class RobotBuilder {
       console.log('No more jobs. RobotBuilder is down');
     }
   }
-
-      // lets make sure the components in the query match to the batchSize we define
-      this.batch = this.componentsQueue.splice(0, this.batchSize);
-      setTimeout(() => {
-        const robot = new Robot(this.batch);
-        const results = this.batch.map(
-          (component) => new JobResult(component.name + 'completed', null)
-        );
-        this.handleBatchCompletion(results);
-        if (this.componentsQueue.length >= this.batchSize) {
-          this.startBuilding();
-        } else {
-          this.building = false;
-        }
-      }, this.buildTime);
-    }
-    // there are no more components in the Queue, therefore we set building to false
-    // and proceed to shutdown RobotBuilder
-    shutdown() {
-      this.shutdownFlag = true;
-    }
+  startBuilding() {
+    this.building = true;
+    // lets make sure the components in the query match to the batchSize we define
+    this.batch = this.componentsQueue.splice(0, this.batchSize);
+    setTimeout(() => {
+      const robot = new Robot(this.batch);
+      const results = this.batch.map(
+        (component) => new JobResult(component.name + 'completed', null)
+      );
+      this.handleBatchCompletion(results);
+      if (this.componentsQueue.length >= this.batchSize) {
+        this.startBuilding();
+      } else {
+        this.building = false;
+      }
+    }, this.buildTime);
   }
-  
-  module.exports = { Job, JobResult, RobotComponent, Robot, RobotBuilder };
-  
+  // there are no more components in the Queue, therefore we set building to false
+  // and proceed to shutdown RobotBuilder
+  shutdown() {
+    this.shutdownFlag = true;
+  }
 }
+
+module.exports = { Job, JobResult, RobotComponent, Robot, RobotBuilder };
